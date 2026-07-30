@@ -1,0 +1,19 @@
+{
+  "opsec": {
+    "use_tor": false,
+    "strict_anonymity": false,
+    "tor_proxy_url": "socks5://127.0.0.1:9050"
+  },
+  "api_keys": {
+    "shodan": [],
+    "epieos": [],
+    "opensky": []
+  },
+  "proxies": [],
+  "ai_settings": {
+    "provider": "ollama",
+    "model_name": "llama3",
+    "api_url": "http://localhost:11434",
+    "api_key": null
+  }
+}
