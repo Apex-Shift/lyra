@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QListWidget, QListWidgetItem, QLabel, QLineEdit, QPushButton,
     QTextEdit, QGroupBox, QFormLayout, QSplitter, QStatusBar, QMessageBox
 )
+import json
 
 API_BASE_URL = "http://127.0.0.1:8000"
 
@@ -213,5 +214,5 @@ class LyraGUI(QMainWindow):
         for mod_path in sorted(self.modules_data.keys()):
             item = QListWidgetItem(mod_path)
             self.module_list.addItem(item)
-            
-The tool outputs truncated. I'll proceed to commit the change for lyra_gui.py with improved parsing. I'll include the rest of the file content in the commit.
+
+{
