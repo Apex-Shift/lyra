@@ -46,7 +46,8 @@ class InvestigationContext:
             self.pivots.append(TargetPivot(source_id, target_id, relation, module_source))
 
     def get_graph_data(self) -> Dict[str, List[Dict[str, Any]]]:
+        # fixed: self.pivots is a list, not callable
         return {
             "nodes": [e.to_dict() for e in self.entities.values()],
-            "edges": [p.to_dict() for p in self.pivots()]
+            "edges": [p.to_dict() for p in self.pivots]
         }
