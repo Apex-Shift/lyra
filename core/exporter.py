@@ -23,12 +23,16 @@ class LyraExporter:
                 "investigator": operator_name,
                 "integrity_protocol": "SHA-256 Chain-of-Custody"
             },
-            "graph_data": {"entities": nodes, "relations": edges}
+            # use nodes/edges naming to match InvestigationContext.get_graph_data()
+            "graph_data": {"nodes": nodes, "edges": edges}
         }
-        raw_json = json.dumps(payload, indent=2, ensure_ascii=False)
+
+        # compute signature over the canonical JSON (without the signature)
+        raw_json = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
         payload["metadata"]["payload_hash_signature"] = self._generate_sha256(raw_json)
+
         file_path = self.export_dir / f"CASE_{case_id}_{int(datetime.now().timestamp())}.json"
-        
+
         loop = asyncio.get_running_loop()
         await loop.run_in_executor(None, lambda: file_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8"))
         print(f"[+] [Exporter] Forensic JSON exported to: {file_path}")

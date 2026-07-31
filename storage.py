@@ -45,29 +45,46 @@ class StorageManager:
             await db.commit()
 
     async def save_case_graph(self, case_id: str, graph_data: Dict[str, List[Dict[str, Any]]]) -> None:
+        # Accept both {"nodes": [...], "edges": [...]} and {"entities": [...], "relations": [...]}
         await self.init_db()
+        nodes = graph_data.get("nodes") or graph_data.get("entities") or []
+        edges = graph_data.get("edges") or graph_data.get("relations") or []
+
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute("INSERT OR IGNORE INTO cases (case_id) VALUES (?)", (case_id,))
-            
+
             # Insertion des nœuds (Entities)
-            for node in graph_data.get("nodes", []):
+            for node in nodes:
+                node_id = node.get("id")
+                if not node_id:
+                    # skip invalid node
+                    continue
                 await db.execute(
                     """
                     INSERT OR REPLACE INTO entities (id, case_id, type, value, metadata, created_at)
                     VALUES (?, ?, ?, ?, ?, ?)
                     """,
                     (
-                        node["id"],
+                        node_id,
                         case_id,
-                        node["type"],
-                        node["value"],
+                        node.get("type"),
+                        node.get("value"),
                         json.dumps(node.get("metadata", {})),
                         node.get("created_at")
                     )
                 )
 
             # Insertion des relations (Edges / Pivots)
-            for edge in graph_data.get("edges", []):
+            for edge in edges:
+                # tolerate both "source" or "src" naming if present
+                source = edge.get("source") or edge.get("src")
+                target = edge.get("target") or edge.get("dst") or edge.get("target_id")
+                relation = edge.get("relation") or edge.get("rel")
+                module_source = edge.get("module_source") or edge.get("module")
+                timestamp = edge.get("timestamp")
+                if not (source and target):
+                    # skip incomplete edge
+                    continue
                 await db.execute(
                     """
                     INSERT INTO pivots (case_id, source_id, target_id, relation, module_source, timestamp)
@@ -75,11 +92,11 @@ class StorageManager:
                     """,
                     (
                         case_id,
-                        edge["source"],
-                        edge["target"],
-                        edge["relation"],
-                        edge["module_source"],
-                        edge["timestamp"]
+                        source,
+                        target,
+                        relation,
+                        module_source,
+                        timestamp
                     )
                 )
             await db.commit()
