@@ -238,43 +238,46 @@ Notes:
 
 ---
 
-## CLI usage
+## CLI Usage
 
-Lyra provides several ways to interact from the command line: run the API server, open the GUI, run modules (via API), export graphs, and ingest graphs into the local storage. This section documents common CLI workflows and examples.
-
-> Note: the repository contains a small GUI (`lyra_gui.py`) and an API entrypoint conventionally invoked like `python lyra.py --api`. If your repo uses a different script name for the API, substitute that name.
+Lyra provides a command-line interface to orchestrate modules, run the local API server, and interact with the storage components.
 
 ### Prerequisites
+
 - Python 3.10+
-- Virtual environment recommended
-- Install dependencies:
-  - pip install -r requirements.txt
-  - pip install pytest (for tests)
+- Active virtual environment (`.venv`)
+- Core dependencies installed via `pip install -r requirements.txt`
 
-### General notes about quoting JSON/typed CLI options
-- The GUI and API preserve typed values by attempting a JSON parse first. When passing JSON on the command line you must quote carefully so your shell sends a valid JSON string.
-  - Linux/macOS (bash/zsh): single-quote the JSON payload: '{"key": "value", "flag": true}'
-  - Windows (cmd.exe): use double quotes and escape inner quotes: "{\"key\":\"value\",\"flag\":true}"
-- For simple booleans or numbers you can often pass plain tokens (true, false, 123), but the safest is JSON.
+### Passing JSON Options via CLI
 
-### Common commands
+When passing typed arguments or JSON payloads via the terminal, ensure proper shell quoting based on your operating system:
 
-1) Run the API server (bind to host/port)
+*   **Linux / macOS (bash/zsh):** Use single quotes around the JSON string.
+    ```bash
+    '{"target": "example.com", "limit": 10}'
+    ```
+*   **Windows (cmd.exe):** Use double quotes and escape internal quotes with backslashes.
+    ```cmd
+    "{\"target\":\"example.com\",\"limit\":10}"
+    ```
+
+### Common Commands
+
+#### 1. Start the API Server
+Launch the backend server to handle module execution (defaults to port `8000`):
 ```bash
-# Example: start the API server (default port 8000)
-python lyra.py --api --host 127.0.0.1 --port 8000
+python lyra_cli.py --api --host 127.0.0.1 --port 8000
 ```
-- The GUI expects the API at http://127.0.0.1:8000 by default. If you run on a different host/port, update API_BASE_URL in lyra_gui.py or pass the matching host:port when launching the GUI.
 
-2) Run the desktop GUI (Control Center)
+#### 2. Run the Desktop GUI
+Start the PySide6 control center application. It automatically connects to the running local API:
 ```bash
 python lyra_gui.py
 ```
-- The GUI will call the API to list available modules and to run modules.
 
-3) Run a module via the API (curl example)
+#### 3. Execute a Module via API (curl)
 ```bash
-curl -X POST "http://127.0.0.1:8000/modules/some/module/path/run" \
+curl -X POST "http://127.0.0" \
   -H "Content-Type: application/json" \
   -d '{"options":{"target":"example.com","limit":10,"include_subdomains":true}}'
 ```
