@@ -89,22 +89,22 @@ pip install -r requirements.txt
 
 ### Run the API
 
-The GUI expects a small API that exposes module listing and module execution endpoints. If the project contains a `lyra.py` entrypoint or other API runner, run:
+Start the local HTTP API backend server to expose modules:
 
 ```bash
-# Example (replace with the real API entrypoint if different)
-python lyra.py --api
+python lyra_cli.py --api
 ```
 
-The GUI expects the API at `http://127.0.0.1:8000` by default (see `lyra_gui.py` API_BASE_URL).
+The GUI connects to this local endpoint at `http://127.0.0.1:8000` by default.
 
 ### Run the GUI
 
-Start the desktop control center:
+Launch the PySide6 control center application:
 
 ```bash
 python lyra_gui.py
 ```
+
 
 - The GUI will attempt to contact the API (`/modules`) and show modules.
 - Enter module option values in the form. The GUI preserves typed values where possible:
