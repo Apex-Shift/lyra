@@ -79,18 +79,12 @@ Typical important files and folders:
 - For async SQLite: aiosqlite
 - For HTTP client (GUI): httpx
 
-Example minimal installation:
+### Installation
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate              # Windows: .venv\Scripts\activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-```
-
-If `requirements.txt` does not include PySide6 or pytest, install them:
-
-```bash
-pip install PySide6 httpx aiosqlite pytest
 ```
 
 ### Run the API
