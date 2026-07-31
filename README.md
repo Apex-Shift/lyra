@@ -394,16 +394,24 @@ Please be mindful if the project touches privacy-sensitive information: follow a
 
 ---
 
-## Suggested follow-ups (low-effort improvements)
+## Roadmap (Future Improvements)
 
-- Add a `Makefile` or `invoke` tasks for common operations (`venv`, `install`, `test`).
-- Add CI workflow to run tests and formatting checks on PRs.
-- Add a small developer `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`.
-- Expand tests for error cases (malformed nodes/edges, unusual metadata).
+Here are the next steps planned for the development of Lyra:
+- Create a `Makefile` to simplify common commands (`venv`, `install`, `test`).
+- Set up a GitHub Actions workflow to automatically run tests on every Pull Request.
+- Add comprehensive developer documentation (`CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`).
+- Add strict validation tests for edge cases, malformed nodes, and empty inputs.
 
 ---
 
-## License & contact
+## Contributing
 
-- Add the appropriate license file (e.g., `LICENSE` — MIT/Apache/BSD as appropriate).
-- For support or questions, open an issue or a discussion in this repository.
+Contributions are welcome! If you would like to help build Lyra, please fork the repository and open a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## License & Contact
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+For support, bug reports, or questions, please open an issue directly on the [GitHub issue tracker](https://github.com).
